@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /* Strategy Design Pattern */
 interface MovementStrategy {
@@ -256,14 +257,11 @@ class Game {
     System.out.println("    0  1  2  3  4  5  6  7  ");
     System.out.println("  +------------------------+");
 
-    int rowCounter = 0;
-    for (Piece[] row : pieces) {
-      System.out.print(String.format("%d |", rowCounter++));
-      for (Piece piece : row) {
-        System.out.print(piece.symbol);
-      }
+    IntStream.range(0, pieces.length).forEach(row -> {
+      System.out.print(String.format("%d |", row));
+      IntStream.range(0, pieces.length).forEach(column -> System.out.print(pieces[row][column].symbol));
       System.out.println("|");
-    }
+    });
 
     System.out.println("  +------------------------+");
   };
