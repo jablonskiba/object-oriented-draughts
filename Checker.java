@@ -1,3 +1,7 @@
+/*
+  Forward and backward diaglonal captures are allowed.
+*/
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -149,15 +153,9 @@ interface PiecesPrinnter {
 class Board {
 
   private final Piece[][] pieces;
-  private final int side;
 
-  Board(Piece[][] pieces, int side) {
+  Board(Piece[][] pieces) {
     this.pieces = pieces;
-    this.side = side;
-  }
-
-  public int getSide() {
-    return side;
   }
 
   public Piece getPiece(Position position) {
@@ -173,8 +171,8 @@ class Board {
   }
 
   public boolean isWithin(Position position) {
-    return position.getRow() >= 0 && position.getColumn() >= 0 && position.getRow() < side
-        && position.getColumn() < side;
+    return position.getRow() >= 0 && position.getColumn() >= 0 && position.getRow() < pieces.length
+        && position.getColumn() < pieces.length;
   }
 
   public void swapPieces(Position first, Position second) {
@@ -250,12 +248,19 @@ class Game {
         { Piece.NONE, Piece.BLACK, Piece.NONE, Piece.BLACK, Piece.NONE, Piece.BLACK, Piece.NONE, Piece.BLACK },
         { Piece.BLACK, Piece.NONE, Piece.BLACK, Piece.NONE, Piece.BLACK, Piece.NONE, Piece.BLACK, Piece.NONE } };
 
-    board = new Board(pieces, 8);
+    board = new Board(pieces);
   }
 
   private final PiecesPrinnter piecesPrinnter = (pieces) -> {
-    System.out.println("    0  1  2  3  4  5  6  7  ");
-    System.out.println("  +------------------------+");
+    System.out.print("  ");
+    IntStream.range(0, pieces.length).forEach(row -> {
+      System.out.print(String.format("  %d", row));
+    });
+    System.out.print("\n  +");
+    IntStream.range(0, pieces.length).forEach(row -> {
+      System.out.print("---");
+    });
+    System.out.println("+");
 
     IntStream.range(0, pieces.length).forEach(row -> {
       System.out.print(String.format("%d |", row));
@@ -263,7 +268,11 @@ class Game {
       System.out.println("|");
     });
 
-    System.out.println("  +------------------------+");
+    System.out.print("  +");
+    IntStream.range(0, pieces.length).forEach(row -> {
+      System.out.print("---");
+    });
+    System.out.println("+");
   };
 
   public void start() {
