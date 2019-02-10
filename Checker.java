@@ -1,5 +1,6 @@
 
 /*
+  OOP principles.
   Forward and backward diaglonal captures are allowed.
 */
 
@@ -263,17 +264,21 @@ class Game {
 
     builder.append("   ");
     IntStream.range(0, pieces.length).forEach(row -> {
-      builder.insert(squareLength + row * squareLength, String.format("  %d", row))
-          .insert(2 * (squareLength + row * squareLength), "---").append(String.format(" %d |", row)).append(IntStream
-              .range(0, pieces.length).mapToObj(column -> pieces[row][column].symbol).collect(Collectors.joining()))
+      builder //
+          .insert(squareLength + row * squareLength, String.format("  %d", row)) //
+          .insert(2 * (squareLength + row * squareLength), "---") //
+          .append(String.format(" %d |", row)) //
+          .append(IntStream.range(0, pieces.length) //
+              .mapToObj(column -> pieces[row][column].symbol).collect(Collectors.joining())) //
           .append("|").append("\n");
     });
-    builder.insert(squareLength + pieces.length * squareLength, "   +")
-        .insert(2 * (squareLength + pieces.length * squareLength) + 1, "+ ")
-        .insert(squareLength + pieces.length * squareLength, '\n')
-        .insert(2 * (squareLength + pieces.length * squareLength) + squareLength + 1, '\n')
+    builder //
+        .insert(squareLength + pieces.length * squareLength, "   +") //
+        .insert(2 * (squareLength + pieces.length * squareLength) + 1, "+ ") //
+        .insert(squareLength + pieces.length * squareLength, '\n') //
+        .insert(2 * (squareLength + pieces.length * squareLength) + squareLength + 1, '\n') //
         .append(builder.subSequence(squareLength + pieces.length * squareLength + 1,
-            2 * (squareLength + pieces.length * squareLength) + 3))
+            2 * (squareLength + pieces.length * squareLength) + 3)) //
         .append('\n');
 
     System.out.print(builder.toString());
