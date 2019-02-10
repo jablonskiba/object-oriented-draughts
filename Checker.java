@@ -1,3 +1,4 @@
+
 /*
   Forward and backward diaglonal captures are allowed.
 */
@@ -6,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /* Strategy Design Pattern */
@@ -155,6 +157,10 @@ class Board {
   private final Piece[][] pieces;
 
   Board(Piece[][] pieces) {
+    if (pieces.length != pieces[0].length) {
+      throw new IllegalArgumentException(
+          String.format("Array (%d, %d) must be square", pieces.length, pieces[0].length));
+    }
     this.pieces = pieces;
   }
 
@@ -252,27 +258,25 @@ class Game {
   }
 
   private final PiecesPrinnter piecesPrinnter = (pieces) -> {
-    System.out.print("  ");
-    IntStream.range(0, pieces.length).forEach(row -> {
-      System.out.print(String.format("  %d", row));
-    });
-    System.out.print("\n  +");
-    IntStream.range(0, pieces.length).forEach(row -> {
-      System.out.print("---");
-    });
-    System.out.println("+");
+    int squareLength = 3;
+    StringBuilder builder = new StringBuilder();
 
+    builder.append("   ");
     IntStream.range(0, pieces.length).forEach(row -> {
-      System.out.print(String.format("%d |", row));
-      IntStream.range(0, pieces.length).forEach(column -> System.out.print(pieces[row][column].symbol));
-      System.out.println("|");
+      builder.insert(squareLength + row * squareLength, String.format("  %d", row))
+          .insert(2 * (squareLength + row * squareLength), "---").append(String.format(" %d |", row)).append(IntStream
+              .range(0, pieces.length).mapToObj(column -> pieces[row][column].symbol).collect(Collectors.joining()))
+          .append("|").append("\n");
     });
+    builder.insert(squareLength + pieces.length * squareLength, "   +")
+        .insert(2 * (squareLength + pieces.length * squareLength) + 1, "+ ")
+        .insert(squareLength + pieces.length * squareLength, '\n')
+        .insert(2 * (squareLength + pieces.length * squareLength) + squareLength + 1, '\n')
+        .append(builder.subSequence(squareLength + pieces.length * squareLength + 1,
+            2 * (squareLength + pieces.length * squareLength) + 3))
+        .append('\n');
 
-    System.out.print("  +");
-    IntStream.range(0, pieces.length).forEach(row -> {
-      System.out.print("---");
-    });
-    System.out.println("+");
+    System.out.print(builder.toString());
   };
 
   public void start() {
