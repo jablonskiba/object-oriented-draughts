@@ -29,7 +29,7 @@ public class Game {
     board = new Board(pieces);
   }
 
-  private final PiecesPrinnter piecesPrinnter = (pieces) -> {
+  private static final PiecesPrinnter PRINNTER = (pieces) -> {
     int squareLength = 3;
     StringBuilder builder = new StringBuilder();
 
@@ -57,7 +57,7 @@ public class Game {
 
   public void start() {
     while (true) {
-      board.print(piecesPrinnter);
+      board.print(PRINNTER);
       System.out.println("Turn of player:" + currentPiece.symbol);
       processUserInput();
     }

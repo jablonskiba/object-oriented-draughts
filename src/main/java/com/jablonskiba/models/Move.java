@@ -18,21 +18,21 @@ public class Move {
     middle = start.add(end.subtract(start).normalise());
   }
 
-  private boolean isLegal(Position start, Position end) {
+  private boolean isLegal() {
     return board.isWithin(start) && board.isWithin(end) && board.isPiece(start, currentPiece)
         && board.isPiece(end, Piece.NONE);
   }
 
-  public boolean isJump(Position start, Position end) {
+  public boolean isJump() {
     return board.getPiece(start).moves(start).contains(end);
   }
 
-  public boolean isCapture(Position position) {
-    return board.isPiece(position, currentPiece.opposite());
+  public boolean isCapture() {
+    return board.isPiece(middle, currentPiece.opposite());
   }
 
   public boolean isValid() {
-    return isLegal(start, end) && (isJump(start, end) || isCapture(middle));
+    return isLegal() && (isJump() || isCapture());
   }
 
   public boolean make() {
