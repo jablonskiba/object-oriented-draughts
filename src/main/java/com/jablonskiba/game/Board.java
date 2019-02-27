@@ -8,7 +8,7 @@ public class Board {
 
   private final Piece[][] pieces;
 
-  Board(Piece[][] pieces) {
+  public Board(Piece[][] pieces) {
     if (pieces.length != pieces[0].length) {
       throw new IllegalArgumentException(
           String.format("Array (%d, %d) must be square", pieces.length, pieces[0].length));
