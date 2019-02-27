@@ -35,13 +35,11 @@ public class Move {
     return isLegal() && (isJump() || isCapture());
   }
 
-  public boolean make() {
-    if (isValid()) {
-      board.setPiece(middle, Piece.NONE);
-      board.swapPieces(start, end);
-
-      return true;
+  public void make() {
+    if (!isValid()) {
+      throw new IllegalStateException("This move is invalid");
     }
-    return false;
+    board.setPiece(middle, Piece.NONE);
+    board.swapPieces(start, end);
   }
 }

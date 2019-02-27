@@ -84,10 +84,11 @@ public class Game {
     Move move = new Move(board, currentPiece, getPosition("Coordinate of piece to move:"),
         getPosition("Coordinate of new position:"));
 
-    if (move.make()) {
+    try {
+      move.make();
       System.out.println("Piece moved!");
       switchCurrentPiece();
-    } else {
+    } catch(IllegalStateException ignored) {
       System.out.println("Invalid move!");
     }
   }

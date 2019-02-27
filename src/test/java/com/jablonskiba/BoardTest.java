@@ -11,11 +11,9 @@ import org.junit.Test;
 
 public class BoardTest {
 
-
-  
   @Test(expected = IllegalArgumentException.class)
   public void testIllegalInstantation() {
-    Piece[][] pieces = {{Piece.NONE, Piece.NONE}};
+    Piece[][] pieces = { { Piece.NONE, Piece.NONE } };
     new Board(pieces);
   }
 

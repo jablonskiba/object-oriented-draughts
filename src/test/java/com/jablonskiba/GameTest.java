@@ -1,8 +1,6 @@
 package com.jablonskiba;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.stream.IntStream;
 
 import com.jablonskiba.game.Board;
@@ -14,7 +12,8 @@ import org.junit.Test;
 
 public class GameTest {
 
-  private Piece makeMove(Board board, Piece currentPiece, int sourceRow, int sourceColumn, int targetRow, int targetColumn) {
+  private Piece makeMove(Board board, Piece currentPiece, int sourceRow, int sourceColumn, int targetRow,
+      int targetColumn) {
     new Move(board, currentPiece, new Position(sourceRow, sourceColumn), new Position(targetRow, targetColumn)).make();
     return currentPiece.opposite();
   }
@@ -58,19 +57,28 @@ public class GameTest {
     currentPiece = makeMove(board, currentPiece, 4, 5, 6, 3);
 
     IntStream.range(0, 8).forEach(row -> {
-          IntStream.range(0, 8).forEach(column -> {
-            assertFalse(board.isPiece(new Position(row, column), Piece.BLACK));
-          });
+      IntStream.range(0, 8).forEach(column -> {
+        assertFalse(board.isPiece(new Position(row, column), Piece.BLACK));
+      });
     });
   }
 
   @Test
-  public void testMoves() {
+  public void testValidMove() {
     Board board = TestHelper.getBoard();
-    
-    assertFalse(new Move(board, Piece.BLACK, new Position(2, 1), new Position(3, 0)).make());
-    assertFalse(new Move(board, Piece.WHITE, new Position(2, 1), new Position(1, 2)).make());
-    assertTrue(new Move(board, Piece.WHITE, new Position(2, 1), new Position(3, 0)).make());
+    new Move(board, Piece.WHITE, new Position(2, 1), new Position(3, 0)).make();
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testInvalidPieceMove() {
+    Board board = TestHelper.getBoard();
+    new Move(board, Piece.BLACK, new Position(2, 1), new Position(3, 0)).make();
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testInalidPositionMove() {
+    Board board = TestHelper.getBoard();
+    new Move(board, Piece.WHITE, new Position(2, 1), new Position(1, 2)).make();
   }
 
 }
